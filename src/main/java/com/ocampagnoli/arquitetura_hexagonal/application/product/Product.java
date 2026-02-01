@@ -1,50 +1,61 @@
 package com.ocampagnoli.arquitetura_hexagonal.application.product;
 
+import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.math.BigDecimal;
 import java.util.Objects;
 import java.util.UUID;
 
-import lombok.Data;
-
 @Data
-public class Product implements ProductInterface {
+public class Product implements IProduct {
     private UUID id;
     private String name;
     private BigDecimal price;
     private ProductStatus status;
 
     @Override
-    public boolean isValid(Product p) {
-        if(p.status != ProductStatus.ENABLED && p.getStatus() != ProductStatus.DISABLED) {
+    public void isValid() throws IllegalArgumentException {
+        if(this.status == null) {
+            this.status = ProductStatus.DISABLED;
+        }
+
+        if(this.status != ProductStatus.ENABLED && this.status != ProductStatus.DISABLED) {
             throw new IllegalArgumentException("The status must be enabled or disabled");
         }
 
-        if (p.getPrice().compareTo(BigDecimal.ZERO) < 0) {
+        if (this.getPrice().compareTo(BigDecimal.ZERO) < 0) {
             throw new IllegalArgumentException("The price must be greater or equal zero");
         }
 
-        if(p.getName().isBlank()) {
+        if (this.getName().isBlank()) {
             throw new IllegalArgumentException("The name must be defined");
         }
-        return true;
     }
 
     @Override
-    public void disable(Product p) {
-        if (Objects.nonNull(p.getPrice()) && p.getPrice().equals(BigDecimal.ZERO)) {
-            p.status = ProductStatus.DISABLED;
+    public void disable() {
+        if (Objects.nonNull(this.getPrice()) && this.getPrice().equals(BigDecimal.ZERO)) {
+            this.status = ProductStatus.DISABLED;
             return;
         }
         throw new IllegalArgumentException("The price must be zero to disable the product");
     }
 
     @Override
-    public void enable(Product p) {
-        if (p.getPrice().compareTo(BigDecimal.ZERO) > 0) {
-            p.status = ProductStatus.ENABLED;
+    public void enable() {
+        if (this.getPrice().compareTo(BigDecimal.ZERO) > 0) {
+            this.status = ProductStatus.ENABLED;
             return;
         }
         throw new IllegalArgumentException("The price must be greater than zero to enable the product");
     }
 
+    @Override
+    public void changePrice(BigDecimal price) throws IllegalArgumentException {
+        if (price.compareTo(BigDecimal.ZERO) < 0) {
+            throw new IllegalArgumentException("The price must be greater or equal zero");
+        }
+    }
 }

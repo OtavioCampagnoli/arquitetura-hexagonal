@@ -16,7 +16,7 @@ class ProductTest {
         Product product = new Product();
         product.setName("Product Test");
         product.setPrice(new BigDecimal("10.00"));
-        product.enable(product);
+        product.enable();
         Assertions.assertEquals(ProductStatus.ENABLED, product.getStatus());
     }
 
@@ -25,7 +25,7 @@ class ProductTest {
         Product product = new Product();
         product.setName("Product Test");
         product.setPrice(new BigDecimal("0"));
-        assertThrows(IllegalArgumentException.class, () -> product.enable(product), "The price must be greater than zero to enable the product");
+        assertThrows(IllegalArgumentException.class, () -> product.enable(), "The price must be greater than zero to enable the product");
     }
 
     @Test
@@ -33,7 +33,7 @@ class ProductTest {
         Product product = new Product();
         product.setName("Product Test");
         product.setPrice(BigDecimal.ZERO);
-        product.disable(product);
+        product.disable();
         Assertions.assertEquals(ProductStatus.DISABLED, product.getStatus());
     }
 
@@ -41,14 +41,14 @@ class ProductTest {
     void testProduct_disable_invalidPrice() {
         Product product = new Product();
         product.setName("Product Test");
-        assertThrows(IllegalArgumentException.class, () -> product.disable(product), "The price must be zero to disable the product");
+        assertThrows(IllegalArgumentException.class, () -> product.disable(), "The price must be zero to disable the product");
     }
 
     @Test
     void testProduct_isValid_invalidPrice() {
         Product product = new Product();
         product.setPrice(new BigDecimal("-10.00"));
-        assertThrows(IllegalArgumentException.class, () -> product.isValid(product), "The price must be greater or equal zero");
+        assertThrows(IllegalArgumentException.class, () -> product.isValid(), "The price must be greater or equal zero");
     }
 
     @Test
@@ -56,14 +56,6 @@ class ProductTest {
         Product product = new Product();
         product.setPrice(new BigDecimal("20.00"));
         product.setName("");
-        assertThrows(IllegalArgumentException.class, () -> product.isValid(product), "The name must be defined");
-    }
-
-    @Test
-    void testProduct_isValid_invalidStatus() {
-        Product product = new Product();
-        product.setPrice(new BigDecimal("20.00"));
-        product.setName("Product Test");
-        assertThrows(IllegalArgumentException.class, () -> product.isValid(product), "The status must be enabled or disabled");
+        assertThrows(IllegalArgumentException.class, () -> product.isValid(), "The name must be defined");
     }
 }

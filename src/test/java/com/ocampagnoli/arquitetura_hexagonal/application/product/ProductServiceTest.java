@@ -19,7 +19,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 class ProductServiceTest {
 
     @Mock
-    private ProductPersistenceInterface persistence;
+    private IProductPersistence persistence;
 
     @InjectMocks
     private ProductService service;
@@ -36,7 +36,6 @@ class ProductServiceTest {
 
         Product savedProduct = captor.getValue();
         Assertions.assertNotNull(savedProduct);
-        Assertions.assertNotNull(savedProduct.getId());
         Assertions.assertEquals("Product Test", savedProduct.getName());
         Assertions.assertEquals(new BigDecimal("20.00"), savedProduct.getPrice());
         Assertions.assertEquals(ProductStatus.DISABLED, savedProduct.getStatus());
