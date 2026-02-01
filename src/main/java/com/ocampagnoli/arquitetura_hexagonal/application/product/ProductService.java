@@ -1,16 +1,18 @@
 package com.ocampagnoli.arquitetura_hexagonal.application.product;
 
+import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Service;
+
 import java.math.BigDecimal;
 import java.util.Objects;
 import java.util.UUID;
 
+@Service
+@AllArgsConstructor
 public class ProductService implements IProductService {
 
     private final IProductPersistence persistence;
-
-    public ProductService(IProductPersistence persistence) {
-        this.persistence = persistence;
-    }
 
     @Override
     public IProduct get(String id) {

@@ -1,14 +1,18 @@
 package com.ocampagnoli.arquitetura_hexagonal.application.product;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.util.Objects;
 import java.util.UUID;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class Product implements IProduct {
     private UUID id;
     private String name;
@@ -17,11 +21,11 @@ public class Product implements IProduct {
 
     @Override
     public void isValid() throws IllegalArgumentException {
-        if(this.status == null) {
+        if (this.status == null) {
             this.status = ProductStatus.DISABLED;
         }
 
-        if(this.status != ProductStatus.ENABLED && this.status != ProductStatus.DISABLED) {
+        if (this.status != ProductStatus.ENABLED && this.status != ProductStatus.DISABLED) {
             throw new IllegalArgumentException("The status must be enabled or disabled");
         }
 
@@ -45,7 +49,7 @@ public class Product implements IProduct {
 
     @Override
     public void enable() {
-        if (this.getPrice().compareTo(BigDecimal.ZERO) > 0) {
+        if (this.price.compareTo(BigDecimal.ZERO) > 0) {
             this.status = ProductStatus.ENABLED;
             return;
         }

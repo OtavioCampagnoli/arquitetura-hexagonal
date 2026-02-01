@@ -1,0 +1,5 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://arquitetura-hexagonal-db:5432/arquitetura_hexagonal
+    username: postgres
+    password: postgres

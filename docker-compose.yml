@@ -1,0 +1,34 @@
+# File: `docker-compose.yml`
+version: '3.8'
+services:
+  db:
+    image: postgres:15-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: arquitetura_hexagonal
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - db
+    environment:
+      DB_URI: db
+      DB_PORT: "5432"
+      DB_NAME: arquitetura_hexagonal
+      DB_USERNAME: postgres
+      DB_PASSWORD: root
+      DB_SCHEMA: public
+    ports:
+      - "8080:8080"
+    restart: unless-stopped
+
+volumes:
+  db_data:
